@@ -8,33 +8,53 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/products")
 public class ProductController {
 
-    @Autowired
-    private ProductService productService;  // Додано автозаповнення для сервісу
+    private final ProductService productService;
 
-    // Отримати всі продукти
-    @GetMapping
-    public List<Product> getAllProducts() {
-        return productService.getAllProducts();  // Метод у сервісі для отримання всіх продуктів
+    @Autowired
+    public ProductController(ProductService productService) {
+        this.productService = productService;
     }
 
-    // Отримати продукт за ID
+    // Отримання всіх продуктів
+    @GetMapping
+    public List<ProductDTO> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ProductMapper.INSTANCE.productsToProductDTOs(products);
+    }
+
+    // Отримання продукту за ID
     @GetMapping("/{id}")
     public ProductDTO getProduct(@PathVariable Long id) {
-        Product product = productService.getProductById(id);  // Використовуємо сервіс для отримання продукту
-        return ProductMapper.INSTANCE.productToProductDTO(product);  // Маппінг з Product на ProductDTO
+        Optional<Product> product = productService.getProductById(id);
+        return product.map(ProductMapper.INSTANCE::productToProductDTO).orElse(null);
     }
 
-    // Створити новий продукт
+    // Створення нового продукту
     @PostMapping
     public ProductDTO createProduct(@RequestBody ProductDTO productDTO) {
-        Product product = ProductMapper.INSTANCE.productDTOToProduct(productDTO);  // Маппінг з ProductDTO на Product
-        product = productService.createProduct(product);  // Створення продукту через сервіс
-        return ProductMapper.INSTANCE.productToProductDTO(product);  // Повернення створеного продукту у вигляді DTO
+        Product product = ProductMapper.INSTANCE.productDTOToProduct(productDTO);
+        product = productService.createProduct(product);
+        return ProductMapper.INSTANCE.productToProductDTO(product);
+    }
+
+    // Оновлення продукту
+    @PutMapping("/{id}")
+    public ProductDTO updateProduct(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+        Product product = ProductMapper.INSTANCE.productDTOToProduct(productDTO);
+        Optional<Product> updatedProduct = productService.updateProduct(id, product);
+        return updatedProduct.map(ProductMapper.INSTANCE::productToProductDTO).orElse(null);
+    }
+
+    // Видалення продукту
+    @DeleteMapping("/{id}")
+    public String deleteProduct(@PathVariable Long id) {
+        boolean deleted = productService.deleteProduct(id);
+        return deleted ? "Product deleted successfully" : "Product not found";
     }
 }
-
