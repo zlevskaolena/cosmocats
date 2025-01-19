@@ -2,7 +2,7 @@ package com.cosmocats.intergalacticmarketplace.dto;
 
 import java.util.List;
 
-public class OrderDTO {
+public class OrdersDTO {
 
     private Long id;
 
@@ -10,5 +10,4 @@ public class OrderDTO {
 
     private Double totalAmount;
 
-    // Getters and Setters
 }

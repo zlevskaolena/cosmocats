@@ -8,7 +8,7 @@ import jakarta.persistence.ManyToMany;
 import java.util.List;
 
 @Entity
-public class Order {
+public class Orders {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,6 +19,5 @@ public class Order {
 
     private Double totalAmount;
 
-    // Getters and Setters
 }
 

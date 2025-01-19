@@ -6,5 +6,4 @@ public class CategoryDTO {
 
     private String name;
 
-    // Getters and Setters
 }

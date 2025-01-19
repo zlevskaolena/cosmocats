@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
                 version = "1.0",
                 description = "API для управління космічними товарами"
         ),
-        servers = @Server(url = "/api", description = "API server") // змінили на /api
+        servers = @Server(url = "/api", description = "API server")
 )
 public class SwaggerConfig {
 }

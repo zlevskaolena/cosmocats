@@ -8,7 +8,7 @@ import jakarta.validation.constraints.Size;
 public class Product {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)  // Стратегія генерації значення
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
@@ -25,7 +25,6 @@ public class Product {
         this.price = price;
     }
 
-    // Геттери та сеттери
     public Long getId() {
         return id;
     }
