@@ -1,24 +1,26 @@
-package com.cosmocats.intergalacticmarketplace.entity;
+package com.cosmocats.intergalacticmarketplace.dto;
 
-import jakarta.persistence.*;
+import com.cosmocats.intergalacticmarketplace.service.mapper.wordcheck.CosmicWordCheck;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@Entity
-public class Product {
+public class ProductDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @NotNull(message = "ID не може бути null")
     private Long id;
 
+    @NotNull(message = "Назва не може бути пустою")
+    @Size(min = 3, max = 100, message = "Назва повинна бути від 3 до 100 символів")
+    @CosmicWordCheck(message = "Назва повинна містити космічні терміни (наприклад, star, galaxy, comet)")
     private String name;
+
+    @Size(max = 500, message = "Опис не може перевищувати 500 символів")
     private String description;
+
+    @NotNull(message = "Ціна не може бути null")
     private Double price;
 
-    public Product() {
-    }
-
-    public Product(Long id, String name, String description, Double price) {
+    public ProductDTO(Long id, String name, String description, Double price) {
         this.id = id;
         this.name = name;
         this.description = description;
